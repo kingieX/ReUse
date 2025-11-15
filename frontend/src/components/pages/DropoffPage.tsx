@@ -2,12 +2,18 @@ import { useState } from "react";
 import { Card, CardContent } from "../ui/card";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "../ui/dialog";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 import { DropoffPointCard, DropoffPoint } from "../DropoffPointCard";
 import { Search, MapPin, Upload, CheckCircle } from "lucide-react";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 
 interface DropoffPageProps {
   onNavigate: (page: string) => void;
@@ -29,7 +35,7 @@ export function DropoffPage({ onNavigate }: DropoffPageProps) {
       status: "open",
       hours: "8:00 AM - 6:00 PM",
       contact: "+234 803 XXX XXXX",
-      materials: ["Plastic", "Glass", "Metal", "Cardboard"]
+      materials: ["Plastic", "Glass", "Metal", "Cardboard"],
     },
     {
       id: "2",
@@ -39,7 +45,7 @@ export function DropoffPage({ onNavigate }: DropoffPageProps) {
       status: "open",
       hours: "7:00 AM - 5:00 PM",
       contact: "+234 805 XXX XXXX",
-      materials: ["Plastic", "Metal", "E-waste"]
+      materials: ["Plastic", "Metal", "E-waste"],
     },
     {
       id: "3",
@@ -49,7 +55,7 @@ export function DropoffPage({ onNavigate }: DropoffPageProps) {
       status: "open",
       hours: "8:00 AM - 6:00 PM",
       contact: "+234 807 XXX XXXX",
-      materials: ["Plastic", "Glass", "Cardboard"]
+      materials: ["Plastic", "Glass", "Cardboard"],
     },
     {
       id: "4",
@@ -59,13 +65,14 @@ export function DropoffPage({ onNavigate }: DropoffPageProps) {
       status: "closed",
       hours: "Closed Today",
       contact: "+234 809 XXX XXXX",
-      materials: ["All Materials"]
-    }
+      materials: ["All Materials"],
+    },
   ];
 
-  const filteredPoints = dropoffPoints.filter(point =>
-    point.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    point.address.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredPoints = dropoffPoints.filter(
+    (point) =>
+      point.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      point.address.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleSelectPoint = (id: string) => {
@@ -89,14 +96,16 @@ export function DropoffPage({ onNavigate }: DropoffPageProps) {
     onNavigate("home");
   };
 
-  const selectedPointData = dropoffPoints.find(p => p.id === selectedPoint);
+  const selectedPointData = dropoffPoints.find((p) => p.id === selectedPoint);
 
   return (
     <div className="min-h-screen bg-[#F9FAFB] py-8">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
           <h1 className="mb-2">Find Drop-off Points</h1>
-          <p className="text-[#64748B]">Locate nearby recycling centers and drop your recyclables</p>
+          <p className="text-[#64748B]">
+            Locate nearby recycling centers and drop your recyclables
+          </p>
         </div>
 
         {/* Map Placeholder */}
@@ -106,7 +115,9 @@ export function DropoffPage({ onNavigate }: DropoffPageProps) {
               <div className="text-center">
                 <MapPin className="w-12 h-12 text-[#22C55E] mx-auto mb-3" />
                 <p className="text-[#64748B]">Interactive Map</p>
-                <p className="text-[#64748B]">Showing {filteredPoints.length} drop-off points near you</p>
+                <p className="text-[#64748B]">
+                  Showing {filteredPoints.length} drop-off points near you
+                </p>
               </div>
             </div>
             {/* Map markers simulation */}
@@ -116,7 +127,7 @@ export function DropoffPage({ onNavigate }: DropoffPageProps) {
                 className="absolute w-10 h-10 bg-[#22C55E] rounded-full border-4 border-white shadow-lg flex items-center justify-center cursor-pointer hover:scale-110 transition-transform"
                 style={{
                   left: `${20 + index * 20}%`,
-                  top: `${30 + index * 10}%`
+                  top: `${30 + index * 10}%`,
                 }}
               >
                 <MapPin className="w-5 h-5 text-white" />
@@ -153,7 +164,9 @@ export function DropoffPage({ onNavigate }: DropoffPageProps) {
           <Card>
             <CardContent className="p-12 text-center">
               <MapPin className="w-12 h-12 text-[#64748B] mx-auto mb-4" />
-              <p className="text-[#64748B]">No drop-off points found. Try a different search.</p>
+              <p className="text-[#64748B]">
+                No drop-off points found. Try a different search.
+              </p>
             </CardContent>
           </Card>
         )}
@@ -187,7 +200,11 @@ export function DropoffPage({ onNavigate }: DropoffPageProps) {
               </div>
             </div>
             <div className="flex gap-3">
-              <Button variant="outline" onClick={() => setShowConfirmDialog(false)} className="flex-1">
+              <Button
+                variant="outline"
+                onClick={() => setShowConfirmDialog(false)}
+                className="flex-1"
+              >
                 Cancel
               </Button>
               <Button onClick={handleConfirmDropoff} className="flex-1">

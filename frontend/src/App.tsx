@@ -1,4 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
 import { LandingPage } from "./components/pages/LandingPage";
@@ -18,22 +23,46 @@ import { PrivacyPage } from "./components/pages/PrivacyPage";
 import { LeaderboardPage } from "./components/pages/LeaderboardPage";
 import { Toaster } from "./components/ui/sonner";
 
-type Page = "landing" | "login" | "home" | "dropoff" | "rewards" | "history" | "impact" | "admin" | "about" | "partners" | "faqs" | "contact" | "terms" | "privacy" | "leaderboard";
+type Page =
+  | "landing"
+  | "login"
+  | "home"
+  | "dropoff"
+  | "rewards"
+  | "history"
+  | "impact"
+  | "admin"
+  | "about"
+  | "partners"
+  | "faqs"
+  | "contact"
+  | "terms"
+  | "privacy"
+  | "leaderboard";
 
-export default function App() {
+function AppContent() {
   const [currentPage, setCurrentPage] = useState<Page>("landing");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [tokenBalance] = useState(250); // Mock token balance
+  const [tokenBalance] = useState(250);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Sync URL with currentPage
+  useEffect(() => {
+    const path = location.pathname.slice(1) || "landing";
+    setCurrentPage(path as Page);
+  }, [location.pathname]);
 
   const handleLogin = () => {
     setIsAuthenticated(true);
     setCurrentPage("home");
+    navigate("/home");
   };
 
   const handleNavigate = (page: string) => {
     setCurrentPage(page as Page);
-    // Scroll to top when navigating
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    navigate(`/${page}`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const renderPage = () => {
@@ -43,11 +72,18 @@ export default function App() {
       case "login":
         return <LoginPage onLogin={handleLogin} />;
       case "home":
-        return <Dashboard onNavigate={handleNavigate} tokenBalance={tokenBalance} />;
+        return (
+          <Dashboard onNavigate={handleNavigate} tokenBalance={tokenBalance} />
+        );
       case "dropoff":
         return <DropoffPage onNavigate={handleNavigate} />;
       case "rewards":
-        return <RewardsPage tokenBalance={tokenBalance} onNavigate={handleNavigate} />;
+        return (
+          <RewardsPage
+            tokenBalance={tokenBalance}
+            onNavigate={handleNavigate}
+          />
+        );
       case "history":
         return <TransactionHistory />;
       case "impact":
@@ -78,20 +114,23 @@ export default function App() {
   return (
     <div className="flex flex-col min-h-screen">
       {showNavAndFooter && (
-        <Navbar 
-          currentPage={currentPage} 
-          onNavigate={handleNavigate} 
+        <Navbar
+          currentPage={currentPage}
+          onNavigate={handleNavigate}
           isAuthenticated={isAuthenticated}
         />
       )}
-      
-      <main className="flex-1">
-        {renderPage()}
-      </main>
-
+      <main className="flex-1">{renderPage()}</main>
       {showNavAndFooter && <Footer onNavigate={handleNavigate} />}
-      
       <Toaster position="top-right" />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <Router>
+      <AppContent />
+    </Router>
   );
 }

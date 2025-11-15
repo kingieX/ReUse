@@ -2,12 +2,18 @@ import { useState } from "react";
 import { TokenDisplay } from "../TokenDisplay";
 import { RewardCard, Reward } from "../RewardCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "../ui/dialog";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { CheckCircle, Sparkles } from "lucide-react";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 
 interface RewardsPageProps {
   tokenBalance: number;
@@ -21,26 +27,110 @@ export function RewardsPage({ tokenBalance, onNavigate }: RewardsPageProps) {
   const [phoneNumber, setPhoneNumber] = useState("");
 
   const airtimeRewards: Reward[] = [
-    { id: "a1", type: "airtime", amount: "₦100 Airtime", tokensRequired: 40, provider: "All Networks" },
-    { id: "a2", type: "airtime", amount: "₦200 Airtime", tokensRequired: 75, provider: "All Networks" },
-    { id: "a3", type: "airtime", amount: "₦500 Airtime", tokensRequired: 180, provider: "All Networks" },
-    { id: "a4", type: "airtime", amount: "₦1000 Airtime", tokensRequired: 350, provider: "All Networks" },
+    {
+      id: "a1",
+      type: "airtime",
+      amount: "₦100 Airtime",
+      tokensRequired: 40,
+      provider: "All Networks",
+    },
+    {
+      id: "a2",
+      type: "airtime",
+      amount: "₦200 Airtime",
+      tokensRequired: 75,
+      provider: "All Networks",
+    },
+    {
+      id: "a3",
+      type: "airtime",
+      amount: "₦500 Airtime",
+      tokensRequired: 180,
+      provider: "All Networks",
+    },
+    {
+      id: "a4",
+      type: "airtime",
+      amount: "₦1000 Airtime",
+      tokensRequired: 350,
+      provider: "All Networks",
+    },
   ];
 
   const dataRewards: Reward[] = [
-    { id: "d1", type: "data", amount: "500MB Data", tokensRequired: 50, provider: "MTN" },
-    { id: "d2", type: "data", amount: "1GB Data", tokensRequired: 90, provider: "MTN" },
-    { id: "d3", type: "data", amount: "2GB Data", tokensRequired: 170, provider: "MTN" },
-    { id: "d4", type: "data", amount: "500MB Data", tokensRequired: 50, provider: "Airtel" },
-    { id: "d5", type: "data", amount: "1GB Data", tokensRequired: 90, provider: "Airtel" },
-    { id: "d6", type: "data", amount: "2GB Data", tokensRequired: 170, provider: "Airtel" },
+    {
+      id: "d1",
+      type: "data",
+      amount: "500MB Data",
+      tokensRequired: 50,
+      provider: "MTN",
+    },
+    {
+      id: "d2",
+      type: "data",
+      amount: "1GB Data",
+      tokensRequired: 90,
+      provider: "MTN",
+    },
+    {
+      id: "d3",
+      type: "data",
+      amount: "2GB Data",
+      tokensRequired: 170,
+      provider: "MTN",
+    },
+    {
+      id: "d4",
+      type: "data",
+      amount: "500MB Data",
+      tokensRequired: 50,
+      provider: "Airtel",
+    },
+    {
+      id: "d5",
+      type: "data",
+      amount: "1GB Data",
+      tokensRequired: 90,
+      provider: "Airtel",
+    },
+    {
+      id: "d6",
+      type: "data",
+      amount: "2GB Data",
+      tokensRequired: 170,
+      provider: "Airtel",
+    },
   ];
 
   const cashRewards: Reward[] = [
-    { id: "c1", type: "cash", amount: "₦500 Cash", tokensRequired: 200, provider: "Bank Transfer" },
-    { id: "c2", type: "cash", amount: "₦1000 Cash", tokensRequired: 380, provider: "Bank Transfer" },
-    { id: "c3", type: "cash", amount: "₦2000 Cash", tokensRequired: 750, provider: "Bank Transfer" },
-    { id: "c4", type: "cash", amount: "₦5000 Cash", tokensRequired: 1800, provider: "Bank Transfer" },
+    {
+      id: "c1",
+      type: "cash",
+      amount: "₦500 Cash",
+      tokensRequired: 200,
+      provider: "Bank Transfer",
+    },
+    {
+      id: "c2",
+      type: "cash",
+      amount: "₦1000 Cash",
+      tokensRequired: 380,
+      provider: "Bank Transfer",
+    },
+    {
+      id: "c3",
+      type: "cash",
+      amount: "₦2000 Cash",
+      tokensRequired: 750,
+      provider: "Bank Transfer",
+    },
+    {
+      id: "c4",
+      type: "cash",
+      amount: "₦5000 Cash",
+      tokensRequired: 1800,
+      provider: "Bank Transfer",
+    },
   ];
 
   const handleRedeemClick = (reward: Reward) => {
@@ -76,7 +166,9 @@ export function RewardsPage({ tokenBalance, onNavigate }: RewardsPageProps) {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
           <h1 className="mb-2">Rewards Catalog</h1>
-          <p className="text-[#64748B]">Redeem your tokens for exciting rewards</p>
+          <p className="text-[#64748B]">
+            Redeem your tokens for exciting rewards
+          </p>
         </div>
 
         {/* Token Balance */}
@@ -150,11 +242,15 @@ export function RewardsPage({ tokenBalance, onNavigate }: RewardsPageProps) {
               </div>
               <div className="flex justify-between mb-2">
                 <span className="text-[#64748B]">Cost:</span>
-                <span className="text-[#FACC15]">{selectedReward?.tokensRequired} Tokens</span>
+                <span className="text-[#FACC15]">
+                  {selectedReward?.tokensRequired} Tokens
+                </span>
               </div>
               <div className="flex justify-between border-t pt-2 mt-2">
                 <span className="text-[#64748B]">Remaining Balance:</span>
-                <span>{tokenBalance - (selectedReward?.tokensRequired || 0)} Tokens</span>
+                <span>
+                  {tokenBalance - (selectedReward?.tokensRequired || 0)} Tokens
+                </span>
               </div>
             </div>
 
@@ -178,7 +274,11 @@ export function RewardsPage({ tokenBalance, onNavigate }: RewardsPageProps) {
             )}
 
             <div className="flex gap-3">
-              <Button variant="outline" onClick={() => setShowRedeemDialog(false)} className="flex-1">
+              <Button
+                variant="outline"
+                onClick={() => setShowRedeemDialog(false)}
+                className="flex-1"
+              >
                 Cancel
               </Button>
               <Button onClick={handleConfirmRedeem} className="flex-1">

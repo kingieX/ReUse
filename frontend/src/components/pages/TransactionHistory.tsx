@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
 import {
   Table,
   TableBody,
@@ -34,7 +40,7 @@ export function TransactionHistory() {
       location: "Ikeja Recycling Center",
       tokens: 50,
       date: "Nov 12, 2025 - 10:30 AM",
-      status: "confirmed"
+      status: "confirmed",
     },
     {
       id: "TXN002",
@@ -42,7 +48,7 @@ export function TransactionHistory() {
       description: "₦200 Airtime - MTN",
       tokens: -75,
       date: "Nov 11, 2025 - 3:45 PM",
-      status: "completed"
+      status: "completed",
     },
     {
       id: "TXN003",
@@ -51,7 +57,7 @@ export function TransactionHistory() {
       location: "Victoria Island Collection Point",
       tokens: 30,
       date: "Nov 10, 2025 - 2:15 PM",
-      status: "confirmed"
+      status: "confirmed",
     },
     {
       id: "TXN004",
@@ -60,7 +66,7 @@ export function TransactionHistory() {
       location: "Lekki Green Hub",
       tokens: 25,
       date: "Nov 9, 2025 - 11:00 AM",
-      status: "pending"
+      status: "pending",
     },
     {
       id: "TXN005",
@@ -68,7 +74,7 @@ export function TransactionHistory() {
       description: "1GB Data - Airtel",
       tokens: -90,
       date: "Nov 8, 2025 - 4:20 PM",
-      status: "completed"
+      status: "completed",
     },
     {
       id: "TXN006",
@@ -77,7 +83,7 @@ export function TransactionHistory() {
       location: "Surulere Eco Center",
       tokens: 40,
       date: "Nov 7, 2025 - 9:30 AM",
-      status: "confirmed"
+      status: "confirmed",
     },
     {
       id: "TXN007",
@@ -85,7 +91,7 @@ export function TransactionHistory() {
       description: "₦100 Airtime - Glo",
       tokens: -40,
       date: "Nov 5, 2025 - 1:15 PM",
-      status: "completed"
+      status: "completed",
     },
     {
       id: "TXN008",
@@ -94,21 +100,22 @@ export function TransactionHistory() {
       location: "Ikeja Recycling Center",
       tokens: 35,
       date: "Nov 4, 2025 - 3:00 PM",
-      status: "confirmed"
+      status: "confirmed",
     },
   ];
 
-  const filteredTransactions = filter === "all" 
-    ? transactions 
-    : transactions.filter(t => t.type === filter);
+  const filteredTransactions =
+    filter === "all"
+      ? transactions
+      : transactions.filter((t) => t.type === filter);
 
   const totalEarned = transactions
-    .filter(t => t.type === "dropoff" && t.tokens > 0)
+    .filter((t) => t.type === "dropoff" && t.tokens > 0)
     .reduce((sum, t) => sum + t.tokens, 0);
 
   const totalRedeemed = Math.abs(
     transactions
-      .filter(t => t.type === "redemption" && t.tokens < 0)
+      .filter((t) => t.type === "redemption" && t.tokens < 0)
       .reduce((sum, t) => sum + t.tokens, 0)
   );
 
@@ -131,7 +138,9 @@ export function TransactionHistory() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
           <h1 className="mb-2">Transaction History</h1>
-          <p className="text-[#64748B]">View all your recycling activities and redemptions</p>
+          <p className="text-[#64748B]">
+            View all your recycling activities and redemptions
+          </p>
         </div>
 
         {/* Summary Cards */}
@@ -185,9 +194,15 @@ export function TransactionHistory() {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
                 <CardTitle>All Transactions</CardTitle>
-                <CardDescription>Complete history of your activities</CardDescription>
+                <CardDescription>
+                  Complete history of your activities
+                </CardDescription>
               </div>
-              <Tabs value={filter} onValueChange={(v) => setFilter(v as any)} className="w-full sm:w-auto">
+              <Tabs
+                value={filter}
+                onValueChange={(v: any) => setFilter(v as any)}
+                className="w-full sm:w-auto"
+              >
                 <TabsList>
                   <TabsTrigger value="all">All</TabsTrigger>
                   <TabsTrigger value="dropoff">Drop-offs</TabsTrigger>
@@ -231,16 +246,27 @@ export function TransactionHistory() {
                         <div>
                           <p>{transaction.description}</p>
                           {transaction.location && (
-                            <p className="text-[#64748B]">{transaction.location}</p>
+                            <p className="text-[#64748B]">
+                              {transaction.location}
+                            </p>
                           )}
                         </div>
                       </TableCell>
                       <TableCell>
-                        <span className={transaction.tokens > 0 ? 'text-[#22C55E]' : 'text-[#64748B]'}>
-                          {transaction.tokens > 0 ? '+' : ''}{transaction.tokens}
+                        <span
+                          className={
+                            transaction.tokens > 0
+                              ? "text-[#22C55E]"
+                              : "text-[#64748B]"
+                          }
+                        >
+                          {transaction.tokens > 0 ? "+" : ""}
+                          {transaction.tokens}
                         </span>
                       </TableCell>
-                      <TableCell className="text-[#64748B]">{transaction.date}</TableCell>
+                      <TableCell className="text-[#64748B]">
+                        {transaction.date}
+                      </TableCell>
                       <TableCell>
                         <Badge variant={getStatusColor(transaction.status)}>
                           {transaction.status}
@@ -255,7 +281,9 @@ export function TransactionHistory() {
             {filteredTransactions.length === 0 && (
               <div className="text-center py-12">
                 <Filter className="w-12 h-12 text-[#64748B] mx-auto mb-4" />
-                <p className="text-[#64748B]">No transactions found for this filter</p>
+                <p className="text-[#64748B]">
+                  No transactions found for this filter
+                </p>
               </div>
             )}
           </CardContent>

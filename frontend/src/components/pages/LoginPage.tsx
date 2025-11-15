@@ -1,11 +1,17 @@
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/input-otp";
 import { Recycle } from "lucide-react";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 
 interface LoginPageProps {
   onLogin: () => void;
@@ -47,12 +53,13 @@ export function LoginPage({ onLogin }: LoginPageProps) {
 
         <Card className="border-0 shadow-xl">
           <CardHeader>
-            <CardTitle>{step === "phone" ? "Enter Your Phone Number" : "Verify OTP"}</CardTitle>
+            <CardTitle>
+              {step === "phone" ? "Enter Your Phone Number" : "Verify OTP"}
+            </CardTitle>
             <CardDescription>
-              {step === "phone" 
-                ? "We'll send you a verification code" 
-                : `Enter the 6-digit code sent to ${phoneNumber}`
-              }
+              {step === "phone"
+                ? "We'll send you a verification code"
+                : `Enter the 6-digit code sent to ${phoneNumber}`}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -98,9 +105,9 @@ export function LoginPage({ onLogin }: LoginPageProps) {
                 <Button onClick={handleVerifyOTP} className="w-full" size="lg">
                   Verify & Login
                 </Button>
-                <Button 
-                  variant="ghost" 
-                  onClick={() => setStep("phone")} 
+                <Button
+                  variant="ghost"
+                  onClick={() => setStep("phone")}
                   className="w-full"
                 >
                   Change Phone Number
