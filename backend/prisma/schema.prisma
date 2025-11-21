@@ -1,0 +1,225 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Users
+model User {
+  id        String   @id @default(cuid())
+  phone     String   @unique
+  name      String?
+  email     String?
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  dropOffs    DropOff[]
+  wallet      TokenWallet?
+  transactions TokenTransaction[]
+  redemptions Redemption[]
+  otpAttempts OTPAttempt[]
+
+  @@index([phone])
+}
+
+// Drop-off Points
+model DropOffPoint {
+  id        String   @id @default(cuid())
+  name      String
+  address   String
+  latitude  Float?
+  longitude Float?
+  managerId String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  dropOffs DropOff[]
+
+  @@index([isActive])
+}
+
+// Drop-offs
+model DropOff {
+  id          String         @id @default(cuid())
+  userId      String
+  pointId     String
+  status      DropOffStatus  @default(PENDING)
+  estimatedKg Float?
+  confirmedKg Float?
+  photoUrl    String?
+  notes       String?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  confirmedAt DateTime?
+
+  user  User          @relation(fields: [userId], references: [id])
+  point DropOffPoint  @relation(fields: [pointId], references: [id])
+  items DropOffItem[]
+
+  @@index([userId])
+  @@index([pointId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+// Drop-off Items
+model DropOffItem {
+  id         String       @id @default(cuid())
+  dropOffId  String
+  material   MaterialType
+  estimatedKg Float
+  confirmedKg Float?
+
+  dropOff DropOff @relation(fields: [dropOffId], references: [id], onDelete: Cascade)
+
+  @@index([dropOffId])
+}
+
+// Token Wallet
+model TokenWallet {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  balance   Float    @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+// Token Transactions (Ledger)
+model TokenTransaction {
+  id        String      @id @default(cuid())
+  userId    String
+  amount    Float
+  type      TokenTxType
+  status    TxStatus    @default(COMPLETED)
+  reference String?     // e.g., dropOffId or redemptionId
+  meta      Json?
+  createdAt DateTime    @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([createdAt])
+  @@index([reference])
+}
+
+// Redemptions
+model Redemption {
+  id         String     @id @default(cuid())
+  userId     String
+  tokens     Float
+  rewardType RewardType
+  target     String     // phone number for airtime/data, account for cash
+  externalId String?    // transaction ID from rewards provider
+  status     TxStatus   @default(PENDING)
+  meta       Json?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+// Partners (Recyclers, Telcos, Fintech)
+model Partner {
+  id        String      @id @default(cuid())
+  name      String
+  type      PartnerType
+  contact   String?
+  meta      Json?
+  isActive  Boolean     @default(true)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  exports RecyclerExport[]
+
+  @@index([type])
+}
+
+// Recycler Exports
+model RecyclerExport {
+  id         String   @id @default(cuid())
+  partnerId  String
+  fileUrl    String
+  recordCount Int
+  totalKg    Float
+  status     String   @default("SENT") // SENT, DELIVERED, PAID
+  createdAt  DateTime @default(now())
+  paidAt     DateTime?
+
+  partner Partner @relation(fields: [partnerId], references: [id])
+
+  @@index([partnerId])
+  @@index([status])
+}
+
+// OTP Attempts (for rate limiting)
+model OTPAttempt {
+  id        String   @id @default(cuid())
+  userId    String
+  phone     String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([phone])
+  @@index([createdAt])
+}
+
+// Enums
+enum Role {
+  USER
+  ADMIN
+  MANAGER
+}
+
+enum MaterialType {
+  PET
+  HDPE
+  LDPE
+  PP
+  ALUMINIUM
+  GLASS
+  PAPER
+  CARDBOARD
+  OTHER
+}
+
+enum DropOffStatus {
+  PENDING
+  CONFIRMED
+  REJECTED
+}
+
+enum TokenTxType {
+  CREDIT
+  DEBIT
+  ADJUSTMENT
+}
+
+enum TxStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+enum RewardType {
+  AIRTIME
+  DATA
+  CASH
+}
+
+enum PartnerType {
+  RECYCLER
+  TELCO
+  FINTECH
+}
