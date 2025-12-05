@@ -2,6 +2,7 @@ import prisma from "../lib/prisma.ts";
 import type { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { stat } from "fs";
 
 export const registerUser = async (req: Request, res: Response) => {
   const { email, password, phone, role } = req.body;
@@ -36,9 +37,9 @@ export const registerUser = async (req: Request, res: Response) => {
       throw new Error("JWT_SECRET environment variable is not set");
     }
     const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: "1h" });
-    res.status(201).json({ user, token });
+    res.status(201).json({ status: "success", data:{email: user.email, phone: user.phone, role: user.role}, token });
   } catch (error) {
-    res.status(500).json({ error: "User registration failed" });
+    res.status(500).json({ status: "error", error: "User registration failed" });
   }
 };
 
@@ -70,9 +71,9 @@ export const loginUser = async (req: Request, res: Response) => {
       throw new Error("JWT_SECRET environment variable is not set");
     }
     const token = jwt.sign({ userId: userByEmail.id }, JWT_SECRET, { expiresIn: "1h" });
-    res.status(200).json({ user: userByEmail, token });
+    res.status(200).json({ status: "success", data: { email: userByEmail.email, phone: userByEmail.phone, role: userByEmail.role }, token });
   } catch (error) {
-    res.status(500).json({ error: "User login failed" });
+    res.status(500).json({ status: "error", error: "User login failed" });
   }
 };
 
@@ -97,9 +98,9 @@ export const getUserProfile = async (req: Request, res: Response) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    res.status(200).json({ user });
+    res.status(200).json({ status: "success", data: user });
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch user profile" });
+    res.status(500).json({ status: "error", error: "Failed to fetch user profile" });
   }
 };
 // export const logoutUser = async () => {};
