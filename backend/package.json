@@ -2,10 +2,10 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  {
+  "main": "server.ts",
+  
     "scripts": {
-      "dev": "nodemon src/index.ts",
+      "dev": "nodemon src/server.ts",
       "build": "tsc",
       "start": "node dist/index.js",
       "prisma:generate": "prisma generate",
@@ -16,12 +16,11 @@
       "test:watch": "jest --watch",
       "lint": "eslint src/**/*.ts",
       "format": "prettier --write \"src/**/*.ts\""
-    }
-  },
+    },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.932.0",
     "@aws-sdk/s3-request-presigner": "^3.932.0",

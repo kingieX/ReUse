@@ -1,4 +1,8 @@
+import dotenv from "dotenv";
 import { defineConfig, env } from "prisma/config";
+
+// Load .env early so env("...") inside prisma config can read variables
+dotenv.config({ path: ".env" });
 
 export default defineConfig({
   schema: "prisma/schema.prisma",
