@@ -17,7 +17,11 @@ interface NavbarProps {
   isAuthenticated?: boolean;
 }
 
-export function Navbar({ currentPage, onNavigate, isAuthenticated }: NavbarProps) {
+export function Navbar({
+  currentPage,
+  onNavigate,
+  isAuthenticated,
+}: NavbarProps) {
   const navLinks = [
     { name: "Home", value: "home" },
     { name: "Drop-off Points", value: "dropoff" },
@@ -31,10 +35,13 @@ export function Navbar({ currentPage, onNavigate, isAuthenticated }: NavbarProps
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-8">
-            <button onClick={() => onNavigate("landing")} className="cursor-pointer">
+            <button
+              onClick={() => onNavigate("landing")}
+              className="cursor-pointer"
+            >
               <Logo />
             </button>
-            
+
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-6">
               {navLinks.map((link) => (
@@ -42,7 +49,9 @@ export function Navbar({ currentPage, onNavigate, isAuthenticated }: NavbarProps
                   key={link.value}
                   onClick={() => onNavigate(link.value)}
                   className={`transition-colors hover:text-[#22C55E] ${
-                    currentPage === link.value ? "text-[#22C55E]" : "text-[#64748B]"
+                    currentPage === link.value
+                      ? "text-[#22C55E]"
+                      : "text-[#64748B]"
                   }`}
                 >
                   {link.name}
@@ -56,7 +65,10 @@ export function Navbar({ currentPage, onNavigate, isAuthenticated }: NavbarProps
             {isAuthenticated ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                  <Button
+                    variant="ghost"
+                    className="relative h-10 w-10 rounded-full"
+                  >
                     <Avatar>
                       <AvatarFallback className="bg-[#22C55E] text-white">
                         <User className="h-5 w-5" />
@@ -92,7 +104,12 @@ export function Navbar({ currentPage, onNavigate, isAuthenticated }: NavbarProps
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Button onClick={() => onNavigate("login")}>Sign In</Button>
+              <div className="flex gap-4">
+                <Button onClick={() => onNavigate("login")}>Sign In</Button>
+                <Button onClick={() => onNavigate("signup")} className="ml-2">
+                  Sign up
+                </Button>
+              </div>
             )}
           </div>
 
@@ -110,16 +127,29 @@ export function Navbar({ currentPage, onNavigate, isAuthenticated }: NavbarProps
                     key={link.value}
                     onClick={() => onNavigate(link.value)}
                     className={`text-left transition-colors hover:text-[#22C55E] ${
-                      currentPage === link.value ? "text-[#22C55E]" : "text-[#64748B]"
+                      currentPage === link.value
+                        ? "text-[#22C55E]"
+                        : "text-[#64748B]"
                     }`}
                   >
                     {link.name}
                   </button>
                 ))}
                 {!isAuthenticated && (
-                  <Button onClick={() => onNavigate("login")} className="w-full">
-                    Sign In
-                  </Button>
+                  <div>
+                    <Button
+                      onClick={() => onNavigate("login")}
+                      className="w-full"
+                    >
+                      Sign In
+                    </Button>
+                    <Button
+                      onClick={() => onNavigate("signup")}
+                      className="w-full"
+                    >
+                      Sign up
+                    </Button>
+                  </div>
                 )}
               </div>
             </SheetContent>
