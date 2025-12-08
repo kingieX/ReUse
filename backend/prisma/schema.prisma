@@ -3,16 +3,17 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 // Users
 model User {
-  id        String   @id @default(cuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   phone     String   @unique
   name      String?
-  email     String?
+  password  String 
+  email     String?  @unique
   role      Role     @default(USER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -23,12 +24,12 @@ model User {
   redemptions Redemption[]
   otpAttempts OTPAttempt[]
 
-  @@index([phone])
+  // phone is already marked @unique above, no separate index needed
 }
 
 // Drop-off Points
 model DropOffPoint {
-  id        String   @id @default(cuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   address   String
   latitude  Float?
@@ -45,7 +46,7 @@ model DropOffPoint {
 
 // Drop-offs
 model DropOff {
-  id          String         @id @default(cuid())
+  id          String         @id @default(auto()) @map("_id") @db.ObjectId
   userId      String
   pointId     String
   status      DropOffStatus  @default(PENDING)
@@ -69,7 +70,7 @@ model DropOff {
 
 // Drop-off Items
 model DropOffItem {
-  id         String       @id @default(cuid())
+  id         String       @id @default(auto()) @map("_id") @db.ObjectId
   dropOffId  String
   material   MaterialType
   estimatedKg Float
@@ -82,7 +83,7 @@ model DropOffItem {
 
 // Token Wallet
 model TokenWallet {
-  id        String   @id @default(cuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   userId    String   @unique
   balance   Float    @default(0)
   createdAt DateTime @default(now())
@@ -93,7 +94,7 @@ model TokenWallet {
 
 // Token Transactions (Ledger)
 model TokenTransaction {
-  id        String      @id @default(cuid())
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
   userId    String
   amount    Float
   type      TokenTxType
@@ -111,7 +112,7 @@ model TokenTransaction {
 
 // Redemptions
 model Redemption {
-  id         String     @id @default(cuid())
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
   userId     String
   tokens     Float
   rewardType RewardType
@@ -131,7 +132,7 @@ model Redemption {
 
 // Partners (Recyclers, Telcos, Fintech)
 model Partner {
-  id        String      @id @default(cuid())
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   type      PartnerType
   contact   String?
@@ -147,7 +148,7 @@ model Partner {
 
 // Recycler Exports
 model RecyclerExport {
-  id         String   @id @default(cuid())
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
   partnerId  String
   fileUrl    String
   recordCount Int
@@ -164,7 +165,7 @@ model RecyclerExport {
 
 // OTP Attempts (for rate limiting)
 model OTPAttempt {
-  id        String   @id @default(cuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   userId    String
   phone     String
   createdAt DateTime @default(now())
