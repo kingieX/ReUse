@@ -22,10 +22,13 @@ import { TermsPage } from "./components/pages/TermsPage";
 import { PrivacyPage } from "./components/pages/PrivacyPage";
 import { LeaderboardPage } from "./components/pages/LeaderboardPage";
 import { Toaster } from "./components/ui/sonner";
+import { SignUpPage } from "./components/pages/SignUpPage";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 type Page =
   | "landing"
   | "login"
+  | "signup"
   | "home"
   | "dropoff"
   | "rewards"
@@ -59,6 +62,12 @@ function AppContent() {
     navigate("/home");
   };
 
+  const handleSignup = () => {
+    setIsAuthenticated(true);
+    setCurrentPage("home");
+    navigate("/home");
+  };
+
   const handleNavigate = (page: string) => {
     setCurrentPage(page as Page);
     navigate(`/${page}`);
@@ -71,25 +80,48 @@ function AppContent() {
         return <LandingPage onNavigate={handleNavigate} />;
       case "login":
         return <LoginPage onLogin={handleLogin} />;
+      case "signup":
+        return <SignUpPage />;
       case "home":
         return (
-          <Dashboard onNavigate={handleNavigate} tokenBalance={tokenBalance} />
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <Dashboard
+              onNavigate={handleNavigate}
+              tokenBalance={tokenBalance}
+            />
+          </ProtectedRoute>
         );
       case "dropoff":
-        return <DropoffPage onNavigate={handleNavigate} />;
+        return (
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <DropoffPage onNavigate={handleNavigate} />;
+          </ProtectedRoute>
+        );
       case "rewards":
         return (
-          <RewardsPage
-            tokenBalance={tokenBalance}
-            onNavigate={handleNavigate}
-          />
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <RewardsPage
+              tokenBalance={tokenBalance}
+              onNavigate={handleNavigate}
+            />
+          </ProtectedRoute>
         );
       case "history":
-        return <TransactionHistory />;
+        return (
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <TransactionHistory />;
+          </ProtectedRoute>
+        );
+      case "admin":
+        return (
+          <ProtectedRoute isAuthenticated={isAuthenticated}>
+            <AdminDashboard />;
+          </ProtectedRoute>
+        );
+
+      // Public Pages
       case "impact":
         return <ImpactPage />;
-      case "admin":
-        return <AdminDashboard />;
       case "about":
         return <AboutPage />;
       case "partners":
@@ -109,7 +141,8 @@ function AppContent() {
     }
   };
 
-  const showNavAndFooter = currentPage !== "login";
+  // const showNavAndFooter = currentPage !== "login";
+  const showNavAndFooter = currentPage !== "login" && currentPage !== "signup";
 
   return (
     <div className="flex flex-col min-h-screen">

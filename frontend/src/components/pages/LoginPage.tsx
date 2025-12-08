@@ -12,16 +12,25 @@ import { Label } from "../ui/label";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/input-otp";
 import { Recycle } from "lucide-react";
 import { toast } from "sonner";
+import { Link } from "react-router-dom";
 
 interface LoginPageProps {
   onLogin: () => void;
 }
 
 export function LoginPage({ onLogin }: LoginPageProps) {
-  const [step, setStep] = useState<"phone" | "otp">("phone");
+  const [mode, setMode] = useState<"phone" | "email">("email");
+  const [step, setStep] = useState<"phone" | "otp" | "email">("email");
+
   const [phoneNumber, setPhoneNumber] = useState("");
   const [otp, setOtp] = useState("");
 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  // ---------------------------
+  // PHONE FLOW
+  // ---------------------------
   const handleSendOTP = () => {
     if (phoneNumber.length < 10) {
       toast.error("Please enter a valid phone number");
@@ -40,6 +49,17 @@ export function LoginPage({ onLogin }: LoginPageProps) {
     onLogin();
   };
 
+  // ---------------------------
+  // EMAIL FLOW
+  // ---------------------------
+  const handleEmailLogin = () => {
+    if (!email) return toast.error("Enter your email");
+    if (!password) return toast.error("Enter your password");
+
+    toast.success("Logged in with email!");
+    onLogin();
+  };
+
   return (
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-gradient-to-br from-[#22C55E]/10 to-[#84CC16]/10 p-4">
       <div className="w-full max-w-md">
@@ -51,19 +71,49 @@ export function LoginPage({ onLogin }: LoginPageProps) {
           <p className="text-[#64748B]">Sign in to start earning rewards</p>
         </div>
 
+        {/* MODE SWITCHER */}
+        <div className="flex justify-center gap-4 mb-4">
+          <Button
+            variant={mode === "email" ? "default" : "outline"}
+            onClick={() => {
+              setMode("email");
+              setStep("email");
+            }}
+          >
+            Email Login
+          </Button>
+          <Button
+            variant={mode === "phone" ? "default" : "outline"}
+            onClick={() => {
+              setMode("phone");
+              setStep("phone");
+            }}
+          >
+            Phone Login
+          </Button>
+        </div>
+
         <Card className="border-0 shadow-xl">
           <CardHeader>
             <CardTitle>
-              {step === "phone" ? "Enter Your Phone Number" : "Verify OTP"}
+              {mode === "phone"
+                ? step === "phone"
+                  ? "Enter Your Phone Number"
+                  : "Verify OTP"
+                : "Sign in with Email"}
             </CardTitle>
             <CardDescription>
-              {step === "phone"
-                ? "We'll send you a verification code"
-                : `Enter the 6-digit code sent to ${phoneNumber}`}
+              {mode === "phone"
+                ? step === "phone"
+                  ? "We'll send you a verification code"
+                  : `Enter the 6-digit code sent to ${phoneNumber}`
+                : "Enter your email and password"}
             </CardDescription>
           </CardHeader>
+
           <CardContent className="space-y-6">
-            {step === "phone" ? (
+            {/* ---------------- PHONE LOGIN ---------------- */}
+            {mode === "phone" && step === "phone" && (
               <div className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="phone">Phone Number</Label>
@@ -85,26 +135,29 @@ export function LoginPage({ onLogin }: LoginPageProps) {
                   Send OTP
                 </Button>
               </div>
-            ) : (
+            )}
+
+            {/* ---------------- OTP VERIFICATION ---------------- */}
+            {mode === "phone" && step === "otp" && (
               <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Enter Verification Code</Label>
-                  <div className="flex justify-center">
-                    <InputOTP maxLength={6} value={otp} onChange={setOtp}>
-                      <InputOTPGroup>
-                        <InputOTPSlot index={0} />
-                        <InputOTPSlot index={1} />
-                        <InputOTPSlot index={2} />
-                        <InputOTPSlot index={3} />
-                        <InputOTPSlot index={4} />
-                        <InputOTPSlot index={5} />
-                      </InputOTPGroup>
-                    </InputOTP>
-                  </div>
+                <Label>Enter Verification Code</Label>
+                <div className="flex justify-center">
+                  <InputOTP maxLength={6} value={otp} onChange={setOtp}>
+                    <InputOTPGroup>
+                      <InputOTPSlot index={0} />
+                      <InputOTPSlot index={1} />
+                      <InputOTPSlot index={2} />
+                      <InputOTPSlot index={3} />
+                      <InputOTPSlot index={4} />
+                      <InputOTPSlot index={5} />
+                    </InputOTPGroup>
+                  </InputOTP>
                 </div>
+
                 <Button onClick={handleVerifyOTP} className="w-full" size="lg">
                   Verify & Login
                 </Button>
+
                 <Button
                   variant="ghost"
                   onClick={() => setStep("phone")}
@@ -114,10 +167,46 @@ export function LoginPage({ onLogin }: LoginPageProps) {
                 </Button>
               </div>
             )}
+
+            {/* ---------------- EMAIL LOGIN ---------------- */}
+            {mode === "email" && step === "email" && (
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Email</Label>
+                  <Input
+                    type="email"
+                    placeholder="you@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Password</Label>
+                  <Input
+                    type="password"
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+
+                <Button onClick={handleEmailLogin} className="w-full" size="lg">
+                  Login
+                </Button>
+              </div>
+            )}
           </CardContent>
         </Card>
 
         <p className="text-center text-[#64748B] mt-6">
+          Don't have an account?{" "}
+          <Link to="/signup" className="text-[#22C55E] font-semibold">
+            Sign Up
+          </Link>
+        </p>
+
+        <p className="text-center text-[#64748B] mt-2">
           By continuing, you agree to our Terms of Service and Privacy Policy
         </p>
       </div>
