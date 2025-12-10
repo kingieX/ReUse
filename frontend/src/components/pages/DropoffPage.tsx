@@ -223,13 +223,13 @@ export function DropoffPage({ onNavigate }: DropoffPageProps) {
                 className="mt-2"
               />
             </div>
-            <div className="flex items-center gap-2 p-4 rounded-lg bg-[#F3F4F6]">
+            {/* <div className="flex items-center gap-2 p-4 rounded-lg bg-[#F3F4F6]">
               <Upload className="w-5 h-5 text-[#64748B]" />
               <div>
                 <p>Upload Photo (Optional)</p>
                 <p className="text-[#64748B]">Help us verify your drop-off</p>
               </div>
-            </div>
+            </div> */}
             <div className="flex gap-3">
               <Button
                 variant="outline"
