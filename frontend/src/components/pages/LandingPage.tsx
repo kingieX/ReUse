@@ -83,7 +83,8 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                 onClick={() => onNavigate("signup")}
                 className="bg-white text-[#22C55E] hover:bg-white/90"
               >
-                Start Recycling
+                {/* Start Recycling */}
+                Join community
               </Button>
               <Button
                 size="lg"
@@ -92,7 +93,8 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                 onClick={() => onNavigate("dropoff")}
                 className="bg-transparent border-white text-white hover:bg-white/10"
               >
-                Learn More
+                {/* Learn More */}
+                Start Recycling
               </Button>
             </div>
           </div>

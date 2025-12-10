@@ -113,7 +113,8 @@ export function DropoffPage({ onNavigate }: DropoffPageProps) {
     setNotes("");
     setSelectedPoint(null);
     toast.success("50 tokens have been credited to your account!");
-    onNavigate("home");
+    // onNavigate("home");
+    onNavigate("landing");
   };
 
   const selectedPointData = dropoffPoints.find((p) => p.id === selectedPoint);
@@ -253,16 +254,19 @@ export function DropoffPage({ onNavigate }: DropoffPageProps) {
               <CheckCircle className="w-8 h-8 text-[#22C55E]" />
             </div>
             <DialogHeader>
-              <DialogTitle>Drop-off Confirmed! 🎉</DialogTitle>
+              <DialogTitle className="text-center">
+                Drop-off Sent! 🎉
+              </DialogTitle>
               <DialogDescription>
-                You've earned 50 tokens for your contribution
+                {/* You've earned 50 tokens for your contribution */}
+                You will be notified once your drop-off is verified.
               </DialogDescription>
             </DialogHeader>
             <div className="my-6 p-4 rounded-lg bg-gradient-to-r from-[#FACC15]/20 to-[#FDE047]/20">
-              <p className="text-[#14532D]">+50 Tokens</p>
+              {/* <p className="text-[#14532D]">+50 Tokens</p> */}
             </div>
             <Button onClick={handleSuccessClose} className="w-full">
-              Back to Dashboard
+              Back to Home
             </Button>
           </div>
         </DialogContent>
