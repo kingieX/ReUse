@@ -26,9 +26,10 @@ export function Navbar({
 }: NavbarProps) {
   // Public links (always visible)
   const publicLinks = [
-    { name: "Home", value: isAuthenticated ? "home" : "landing" },
-    { name: "Leaderboard", value: "leaderboard" },
-    { name: "Impact", value: "impact" },
+    // { name: "Home", value: isAuthenticated ? "home" : "landing" },
+    // { name: "Leaderboard", value: "leaderboard" },
+    // { name: "Impact", value: "impact" },
+    { name: "", value: "" },
   ];
 
   // Auth-only links
@@ -144,12 +145,16 @@ export function Navbar({
               //     </DropdownMenuContent>
               //   </DropdownMenuPortal>
               // </DropdownMenu>
-              <ProfileMenu onNavigate={onNavigate} />
+              // <ProfileMenu onNavigate={onNavigate} />
+              <div></div>
             ) : (
               <div className="flex gap-4">
-                <Button onClick={() => onNavigate("login")}>Sign In</Button>
-                <Button onClick={() => onNavigate("signup")} className="ml-2">
+                {/* <Button onClick={() => onNavigate("login")}>Sign In</Button> */}
+                {/* <Button onClick={() => onNavigate("signup")} className="ml-2">
                   Sign up
+                </Button> */}
+                <Button onClick={() => onNavigate("signup")} className="ml-2">
+                  Join community
                 </Button>
               </div>
             )}
@@ -199,12 +204,12 @@ export function Navbar({
                 {/* Mobile Auth Buttons */}
                 {!isAuthenticated && (
                   <div>
-                    <Button
+                    {/* <Button
                       onClick={() => onNavigate("login")}
                       className="w-full"
                     >
                       Sign In
-                    </Button>
+                    </Button> */}
                     <Button
                       onClick={() => onNavigate("signup")}
                       className="w-full mt-2"

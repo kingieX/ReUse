@@ -92,11 +92,11 @@ function AppContent() {
           </ProtectedRoute>
         );
       case "dropoff":
-        return (
-          <ProtectedRoute isAuthenticated={isAuthenticated}>
-            <DropoffPage onNavigate={handleNavigate} />;
-          </ProtectedRoute>
-        );
+        return <DropoffPage onNavigate={handleNavigate} />;
+      // (
+      // <ProtectedRoute isAuthenticated={isAuthenticated}>
+      // </ProtectedRoute>
+      // );
       case "rewards":
         return (
           <ProtectedRoute isAuthenticated={isAuthenticated}>

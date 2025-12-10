@@ -80,7 +80,7 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 size="lg"
-                onClick={() => onNavigate("login")}
+                onClick={() => onNavigate("signup")}
                 className="bg-white text-[#22C55E] hover:bg-white/90"
               >
                 Start Recycling
@@ -88,7 +88,8 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
               <Button
                 size="lg"
                 variant="outline"
-                onClick={() => onNavigate("impact")}
+                // onClick={() => onNavigate("impact")}
+                onClick={() => onNavigate("dropoff")}
                 className="bg-transparent border-white text-white hover:bg-white/10"
               >
                 Learn More
@@ -171,7 +172,8 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                 onClick={() => onNavigate("signup")}
                 className="bg-white text-[#22C55E] hover:bg-white/90"
               >
-                Get Started Today
+                {/* Get Started Today */}
+                Join community
               </Button>
             </CardContent>
           </Card>

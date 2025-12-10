@@ -67,6 +67,26 @@ export function DropoffPage({ onNavigate }: DropoffPageProps) {
       contact: "+234 809 XXX XXXX",
       materials: ["All Materials"],
     },
+    {
+      id: "5",
+      name: "Ozoro Waste Management",
+      address: "10 Delta State Polytechnic Rd, Ozoro, Delta State",
+      distance: "5.0 km",
+      status: "open",
+      hours: "9:00 AM - 4:00 PM",
+      contact: "+234 811 XXX XXXX",
+      materials: ["Plastic", "Glass", "Metal", "E-waste"],
+    },
+    {
+      id: "6",
+      name: "Effurun Recycling Depot",
+      address: "5 Udu Road, Effurun, Delta State",
+      distance: "3.0 km",
+      status: "open",
+      hours: "8:00 AM - 6:00 PM",
+      contact: "+234 813 XXX XXXX",
+      materials: ["Plastic", "Glass", "Cardboard"],
+    },
   ];
 
   const filteredPoints = dropoffPoints.filter(
@@ -182,8 +202,18 @@ export function DropoffPage({ onNavigate }: DropoffPageProps) {
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
+            {/* enter your name */}
             <div>
-              <Label htmlFor="notes">Additional Notes (Optional)</Label>
+              <Label htmlFor="names">Full name</Label>
+              <Input id="names" placeholder="John Doe" className="mt-2" />
+            </div>
+            {/* enter user ID */}
+            <div>
+              <Label htmlFor="userId">User ID</Label>
+              <Input id="userId" placeholder="123456" className="mt-2" />
+            </div>
+            <div>
+              <Label htmlFor="notes">Describe your recyclables</Label>
               <Textarea
                 id="notes"
                 placeholder="e.g., 5 plastic bottles, 2 glass containers..."
